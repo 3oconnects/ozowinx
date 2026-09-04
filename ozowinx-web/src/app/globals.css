@@ -1,0 +1,382 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Ozowinx design tokens — Tailwind v4 CSS-first theme.
+   Every value here is exposed as a utility (bg-surface, text-ink, etc.)
+   ------------------------------------------------------------------ */
+@theme {
+  /* Neutrals — slate-biased, never pure grey. Chosen to sit under the blue accent. */
+  --color-canvas: #ffffff;
+  --color-surface: #f8fafc;
+  --color-surface-alt: #f1f5f9;
+  --color-ink: #0f172a;
+  --color-ink-secondary: #475569;
+  --color-ink-tertiary: #94a3b8;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+
+  /* Accent — used selectively. The page stays predominantly white. */
+  --color-accent: #2563eb;
+  --color-accent-dark: #1d4ed8;
+  --color-accent-tint: #eff4ff;
+
+  /* Semantic status — distinct from the accent hue. */
+  --color-ok: #16a34a;
+  --color-warn: #d97706;
+
+  /* Brand spectrum — sampled directly from Logo.png, so these match the
+     master artwork rather than approximating it. Reserved for the mark and
+     the Build/Modernize/Scale signal. */
+  --color-brand-build: #0057e8;
+  --color-brand-modernize: #009d4a;
+  --color-brand-scale: #e11f2c;
+
+  /* The wordmark's ink is deeper than the body ink. Used only for the logo. */
+  --color-brand-ink: #02153a;
+
+  /* Bound to next/font output in app/layout.tsx — self-hosted, no external request. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+  --text-display: 4.25rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.025em;
+
+  --text-h2: 3rem;
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+
+  --container-site: 80rem;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04);
+  --shadow-lift: 0 8px 24px -8px rgb(15 23 42 / 0.12);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 1rem;
+    height: 1px;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .eyebrow-center {
+    justify-content: center;
+  }
+
+  .eyebrow-center::before {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Motion layer.
+
+   Everything below is decorative. Each animation is disabled by the
+   prefers-reduced-motion block at the end of this file, and none of it
+   is load-bearing for layout or legibility — the page reads identically
+   with all of it switched off.
+   ------------------------------------------------------------------ */
+
+@theme {
+  --shadow-glow: 0 0 0 1px rgb(37 99 235 / 0.08), 0 12px 40px -12px rgb(37 99 235 / 0.25);
+  --shadow-float: 0 24px 60px -24px rgb(15 23 42 / 0.22);
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes ozw-aurora {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(3%, -2.5%, 0) scale(1.1);
+  }
+  66% {
+    transform: translate3d(-2.5%, 2.5%, 0) scale(0.95);
+  }
+}
+
+@keyframes ozw-sheen {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes ozw-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes ozw-shine {
+  from {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(320%) skewX(-20deg);
+  }
+}
+
+@keyframes ozw-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes ozw-dash {
+  to {
+    stroke-dashoffset: -400;
+  }
+}
+
+@layer components {
+  /* Faint engineering grid. Fades out toward the edges so it never
+     competes with body copy sitting on top of it. */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 78%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 78%);
+  }
+
+  .dot-bg {
+    background-image: radial-gradient(var(--color-line-strong) 1px, transparent 1px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 10%, transparent 72%);
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 10%, transparent 72%);
+  }
+
+  /* Slow-drifting colour wash — the only place the brand spectrum appears
+     outside the mark itself.
+
+     No will-change here on purpose. These are large blurred surfaces, and
+     promoting them permanently costs memory for the whole session to smooth
+     an animation nobody is watching closely. The compositor promotes them
+     for the duration of the animation on its own. */
+  .aurora-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    opacity: 0.5;
+    animation: ozw-aurora 28s var(--ease-out-soft) infinite;
+  }
+
+  /* Hover sweep for solid buttons. */
+  .shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 45%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.28),
+      transparent
+    );
+    transform: translateX(-120%) skewX(-20deg);
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .shine:hover::after {
+    opacity: 1;
+    animation: ozw-shine 0.9s var(--ease-out-soft);
+  }
+
+  .animate-float {
+    animation: ozw-float 7s ease-in-out infinite;
+  }
+
+  /* Gradient text — reserved for single emphasised words in headlines. */
+  .text-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-accent) 0%,
+      #6366f1 40%,
+      var(--color-accent-dark) 70%,
+      var(--color-accent) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: ozw-sheen 9s linear infinite alternate;
+  }
+
+  /* Animated conic border, revealed on hover. Sits behind the card. */
+  .glow-ring {
+    position: relative;
+  }
+
+  .glow-ring::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--ozw-angle, 0deg),
+      transparent 0deg,
+      var(--color-accent) 70deg,
+      transparent 150deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-out-soft);
+    pointer-events: none;
+  }
+
+  .glow-ring:hover::before {
+    opacity: 1;
+  }
+
+  /* The full ribbon sweep from the mark. Used for rules and progress bars —
+     anywhere a single hairline can carry the brand without competing with
+     content. Never as a fill behind text. */
+  .brand-bar {
+    background: linear-gradient(
+      90deg,
+      #0eb8fe,
+      #0046fe,
+      #7211f0,
+      #c920ef,
+      #e11f2c,
+      #fd8605,
+      #fec40e,
+      #8be427,
+      #00bbba
+    );
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: ozw-marquee var(--ozw-marquee-duration, 40s) linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+  }
+
+  .marquee-mask:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* Data flowing along the CTA architecture lines. */
+  .flow-line {
+    stroke-dasharray: 6 14;
+    animation: ozw-dash 9s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob,
+  .animate-float,
+  .text-gradient,
+  .marquee-track,
+  .flow-line,
+  .shine:hover::after {
+    animation: none !important;
+  }
+
+  .text-gradient {
+    color: var(--color-accent-dark);
+  }
+
+  /* Without the scroll the duplicated marquee half would sit off-screen;
+     wrapping keeps every item reachable when motion is off. */
+  .marquee-track {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+}

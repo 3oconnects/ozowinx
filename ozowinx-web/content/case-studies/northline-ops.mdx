@@ -1,0 +1,41 @@
+---
+title: Northline Ops
+description: Fragmented spreadsheets slowed operations planning across five regional teams.
+date: 2026-05-12
+category: SaaS Platform
+client: Placeholder client
+outcome: Planning cycle reduced from five days to a single afternoon.
+technologies: ['Next.js', 'PostgreSQL', 'AWS']
+placeholder: true
+---
+
+## Challenge
+
+Operations planning ran on a chain of spreadsheets emailed between five regional
+teams. Every planning cycle took most of a week, and by the time the numbers were
+consolidated they were already out of date. Nobody could answer a simple question
+— what is the current plan? — without asking three people first.
+
+## Approach
+
+We started by mapping the real process rather than the documented one, including
+the informal steps teams had invented to work around the tooling. That surfaced
+the actual constraint: not the spreadsheets themselves, but the absence of a
+single record that everyone trusted.
+
+## Architecture
+
+A multi-tenant Next.js application over PostgreSQL, with row-level security
+enforcing regional boundaries and an append-only revision log so any plan can be
+reconstructed as it stood on a given date.
+
+## Outcome
+
+The planning cycle compressed from five days to a single afternoon. More
+importantly, every team now works from the same figures, and disagreements are
+about the plan rather than about whose spreadsheet is correct.
+
+## Lessons Learned
+
+The hardest part was not the software. It was agreeing which team owned each
+number — a governance question the tooling had allowed everyone to avoid.

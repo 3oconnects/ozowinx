@@ -1,0 +1,1038 @@
+<title>Ozowinx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light">
+<style>
+  :root{
+    color-scheme: light;
+    --ozw-bg:#FFFFFF;
+    --ozw-surface:#F8FAFC;
+    --ozw-surface-alt:#F1F5F9;
+    --ozw-text:#0F172A;
+    --ozw-text-secondary:#475569;
+    --ozw-text-tertiary:#94A3B8;
+    --ozw-border:#E2E8F0;
+    --ozw-border-strong:#CBD5E1;
+    --ozw-accent:#2563EB;
+    --ozw-accent-dark:#1D4ED8;
+    --ozw-accent-tint:#EFF4FF;
+    --ozw-good:#16A34A;
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;
+    --max-w:1280px;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,0.04);
+    --shadow-md: 0 8px 24px -8px rgba(15,23,42,0.12);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--ozw-bg);
+    color:var(--ozw-text);
+    font-family:var(--font-sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  h1,h2,h3,h4,p{margin:0;}
+  h1,h2,h3,h4{text-wrap:balance;font-weight:700;letter-spacing:-0.02em;}
+
+  .wrap{max-width:var(--max-w);margin:0 auto;padding:0 32px;}
+  @media (max-width:640px){.wrap{padding:0 20px;}}
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ozw-accent);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:16px;height:1px;background:var(--ozw-accent);display:inline-block;}
+
+  .section{padding:120px 0;}
+  .section-alt{background:var(--ozw-surface);}
+  @media (max-width:900px){.section{padding:80px 0;}}
+
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-head h2{font-size:48px;line-height:1.1;margin-top:16px;}
+  @media (max-width:640px){.section-head h2{font-size:34px;}}
+  .section-head p{margin-top:20px;font-size:18px;color:var(--ozw-text-secondary);line-height:1.65;}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+  .section-head.center .eyebrow{justify-content:center;}
+  .section-head.center .eyebrow::before{display:none;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-weight:600;font-size:15px;
+    padding:13px 22px;border-radius:8px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    white-space:nowrap;
+  }
+  .btn svg{transition:transform .18s ease;flex-shrink:0;}
+  .btn:hover svg{transform:translateX(3px);}
+  .btn-primary{background:var(--ozw-text);color:#fff;}
+  .btn-primary:hover{background:var(--ozw-accent-dark);box-shadow:var(--shadow-md);}
+  .btn-secondary{background:transparent;color:var(--ozw-text);border-color:var(--ozw-border-strong);}
+  .btn-secondary:hover{border-color:var(--ozw-text);background:var(--ozw-surface);}
+  .btn-ghost{background:transparent;color:var(--ozw-text-secondary);}
+  .btn-ghost:hover{color:var(--ozw-text);}
+  .btn-accent{background:var(--ozw-accent);color:#fff;}
+  .btn-accent:hover{background:var(--ozw-accent-dark);box-shadow:var(--shadow-md);}
+  .btn-invert{background:#fff;color:var(--ozw-text);}
+  .btn-invert:hover{background:var(--ozw-accent-tint);}
+  .btn-outline-invert{background:transparent;color:#fff;border-color:rgba(255,255,255,0.35);}
+  .btn-outline-invert:hover{border-color:#fff;background:rgba(255,255,255,0.08);}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal-group.in .reveal-item{opacity:1;transform:translateY(0);}
+  .reveal-item{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
+  .reveal-item:nth-child(1){transition-delay:.02s;}
+  .reveal-item:nth-child(2){transition-delay:.08s;}
+  .reveal-item:nth-child(3){transition-delay:.14s;}
+  .reveal-item:nth-child(4){transition-delay:.2s;}
+  .reveal-item:nth-child(5){transition-delay:.26s;}
+  .reveal-item:nth-child(6){transition-delay:.32s;}
+  .reveal-item:nth-child(7){transition-delay:.38s;}
+  .reveal-item:nth-child(8){transition-delay:.44s;}
+
+  /* ===== NAV ===== */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:#fff;
+    border-bottom:1px solid transparent;
+    transition:height .25s ease, border-color .25s ease, box-shadow .25s ease, backdrop-filter .25s ease;
+  }
+  header.scrolled{
+    border-bottom-color:var(--ozw-border);
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+  }
+  .nav-inner{
+    max-width:var(--max-w);margin:0 auto;padding:0 32px;
+    height:80px;display:flex;align-items:center;justify-content:space-between;
+    transition:height .25s ease;
+  }
+  header.scrolled .nav-inner{height:64px;}
+  @media (max-width:640px){.nav-inner{padding:0 20px;}}
+
+  .logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:19px;letter-spacing:-0.01em;color:var(--ozw-text);}
+  .logo-mark{width:26px;height:26px;flex-shrink:0;}
+  .logo-mark rect{fill:var(--ozw-text);}
+  .logo-mark path{stroke:#fff;}
+
+  .nav-links{display:flex;align-items:center;gap:36px;}
+  .nav-links a{font-size:14.5px;font-weight:500;color:var(--ozw-text-secondary);transition:color .18s ease;position:relative;}
+  .nav-links a:hover{color:var(--ozw-text);}
+  .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-22px;height:2px;background:var(--ozw-accent);transform:scaleX(0);transition:transform .2s ease;}
+  .nav-links a:hover::after{transform:scaleX(1)}
+
+  .nav-actions{display:flex;align-items:center;gap:10px;}
+  .nav-actions .btn{padding:10px 18px;font-size:14px;}
+  .hamburger{display:none;background:none;border:none;padding:8px;cursor:pointer;}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--ozw-text);margin:5px 0;transition:transform .25s ease, opacity .25s ease;}
+
+  @media (max-width:900px){
+    .nav-links{display:none;}
+    .nav-actions .btn-secondary{display:none;}
+    .hamburger{display:block;}
+  }
+
+  .mobile-menu{
+    display:none;position:fixed;inset:64px 0 0 0;background:#fff;z-index:99;
+    padding:24px 20px 40px;overflow-y:auto;
+  }
+  .mobile-menu.open{display:block;}
+  .mobile-menu a{display:block;padding:16px 4px;font-size:19px;font-weight:600;border-bottom:1px solid var(--ozw-border);}
+  .mobile-menu .btn{width:100%;justify-content:center;margin-top:20px;}
+
+  /* ===== HERO ===== */
+  .hero{padding:88px 0 100px;}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+  @media (max-width:1000px){.hero-grid{grid-template-columns:1fr;gap:56px;}}
+  .hero h1{font-size:68px;line-height:1.05;margin-top:22px;letter-spacing:-0.025em;}
+  @media (max-width:640px){.hero h1{font-size:40px;}}
+  @media (max-width:1000px) and (min-width:641px){.hero h1{font-size:52px;}}
+  .hero-sub{margin-top:24px;font-size:19px;line-height:1.65;color:var(--ozw-text-secondary);max-width:520px;}
+  .hero-ctas{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap;}
+  .hero-trust{margin-top:28px;font-family:var(--font-mono);font-size:12.5px;color:var(--ozw-text-tertiary);letter-spacing:0.02em;}
+
+  /* dashboard visual */
+  .dash{
+    background:#fff;border:1px solid var(--ozw-border);border-radius:14px;
+    box-shadow:var(--shadow-md);overflow:hidden;
+  }
+  .dash-bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--ozw-border);background:var(--ozw-surface);}
+  .dash-dot{width:9px;height:9px;border-radius:50%;background:var(--ozw-border-strong);}
+  .dash-title{margin-left:8px;font-family:var(--font-mono);font-size:11.5px;color:var(--ozw-text-tertiary);letter-spacing:0.03em;}
+  .dash-body{padding:24px;}
+  .dash-head{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:var(--ozw-text-tertiary);}
+  .dash-head b{color:var(--ozw-text);font-weight:600;display:block;font-size:13px;letter-spacing:0.06em;margin-bottom:2px;}
+  .dash-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--ozw-text-tertiary);}
+  .dash-rule{height:1px;background:var(--ozw-border);margin:14px 0;}
+  .dash-rows{display:flex;flex-direction:column;gap:12px;}
+  .dash-row{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;}
+  .dash-status{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11.5px;color:var(--ozw-good);}
+  .dash-status i{width:6px;height:6px;border-radius:50%;background:var(--ozw-good);display:inline-block;box-shadow:0 0 0 3px rgba(22,163,74,0.15);animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.45;}}
+  .dash-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .dash-metric b{display:block;font-size:26px;font-weight:700;letter-spacing:-0.02em;}
+  .dash-metric span{font-family:var(--font-mono);font-size:10.5px;color:var(--ozw-text-tertiary);letter-spacing:0.06em;text-transform:uppercase;}
+  .dash-metric.up b{color:var(--ozw-good);}
+
+  /* ===== CAPABILITY STRIP ===== */
+  .strip{border-top:1px solid var(--ozw-border);border-bottom:1px solid var(--ozw-border);}
+  .strip-inner{display:flex;flex-wrap:wrap;}
+  .strip-item{
+    flex:1 1 auto;min-width:150px;text-align:center;
+    padding:22px 12px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.07em;
+    color:var(--ozw-text-tertiary);border-right:1px solid var(--ozw-border);
+    transition:color .2s ease, background .2s ease;
+  }
+  .strip-item:last-child{border-right:none;}
+  .strip-item:hover{color:var(--ozw-text);background:var(--ozw-surface);}
+  @media (max-width:900px){.strip-item{flex:1 1 33.33%;border-bottom:1px solid var(--ozw-border);}}
+  @media (max-width:560px){.strip-item{flex:1 1 50%;}}
+
+  /* ===== INTRO ===== */
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--ozw-border);border:1px solid var(--ozw-border);border-radius:14px;overflow:hidden;margin-top:8px;}
+  @media (max-width:760px){.principles{grid-template-columns:1fr;}}
+  .principle{background:#fff;padding:36px 32px;}
+  .principle-num{font-family:var(--font-mono);font-size:12px;color:var(--ozw-accent);letter-spacing:0.08em;}
+  .principle h3{font-size:23px;margin-top:14px;}
+  .principle p{margin-top:10px;color:var(--ozw-text-secondary);font-size:15.5px;}
+
+  /* ===== SERVICES ===== */
+  .services-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media (max-width:860px){.services-grid{grid-template-columns:1fr;}}
+  .service-card{
+    background:#fff;border:1px solid var(--ozw-border);border-radius:14px;
+    padding:36px;display:flex;flex-direction:column;
+    transition:transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease, box-shadow .25s ease;
+  }
+  .service-card:hover{transform:translateY(-4px);border-color:var(--ozw-border-strong);box-shadow:var(--shadow-md);}
+  .service-index{font-family:var(--font-mono);font-size:12px;color:var(--ozw-text-tertiary);}
+  .service-card h3{font-size:25px;margin-top:14px;}
+  .service-card>p.desc{margin-top:12px;color:var(--ozw-text-secondary);font-size:15.5px;}
+  .service-list{margin-top:22px;padding-top:22px;border-top:1px solid var(--ozw-border);display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;}
+  .service-list li{font-size:14px;color:var(--ozw-text-secondary);display:flex;align-items:baseline;gap:8px;}
+  .service-list li::before{content:"";width:4px;height:4px;background:var(--ozw-accent);border-radius:50%;flex-shrink:0;transform:translateY(-3px);}
+  .service-cta{margin-top:26px;font-weight:600;font-size:14.5px;color:var(--ozw-text);display:inline-flex;align-items:center;gap:6px;}
+  .service-cta svg{transition:transform .2s ease;}
+  .service-card:hover .service-cta svg{transform:translateX(4px);}
+
+  /* ===== FEATURE / ARCHITECTURE ===== */
+  .feature{display:grid;grid-template-columns:0.85fr 1.15fr;gap:72px;align-items:center;}
+  @media (max-width:960px){.feature{grid-template-columns:1fr;gap:48px;}}
+  .feature h2{font-size:42px;margin-top:16px;}
+  .feature p{margin-top:18px;color:var(--ozw-text-secondary);font-size:17px;line-height:1.65;}
+  .feature .btn{margin-top:30px;}
+
+  .arch{background:#fff;border:1px solid var(--ozw-border);border-radius:14px;padding:40px 24px;}
+  .arch-node{
+    font-family:var(--font-mono);font-size:12.5px;font-weight:500;letter-spacing:0.04em;
+    border:1px solid var(--ozw-border-strong);border-radius:8px;padding:10px 16px;
+    background:var(--ozw-surface);color:var(--ozw-text);white-space:nowrap;
+  }
+  .arch-node.primary{background:var(--ozw-text);color:#fff;border-color:var(--ozw-text);}
+  .arch-node.accent{background:var(--ozw-accent-tint);border-color:var(--ozw-accent);color:var(--ozw-accent-dark);}
+  .arch-row{display:flex;justify-content:center;}
+  .arch-row.triple{display:flex;justify-content:space-between;gap:12px;}
+  .arch-row.triple .arch-node{flex:1;text-align:center;}
+  .arch-connector{width:1px;background:var(--ozw-border-strong);height:28px;margin:0 auto;}
+  .arch-fan{position:relative;height:28px;margin:0 auto;max-width:70%;border-top:1px solid var(--ozw-border-strong);}
+  .arch-fan::before,.arch-fan::after{content:"";position:absolute;top:0;width:1px;height:28px;background:var(--ozw-border-strong);}
+  .arch-fan::before{left:0;}
+  .arch-fan::after{right:0;}
+  .arch-fan-mid{position:absolute;left:50%;top:0;width:1px;height:28px;background:var(--ozw-border-strong);}
+
+  /* ===== SOLUTIONS ===== */
+  .solutions-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  @media (max-width:760px){.solutions-grid{grid-template-columns:1fr;}}
+  .solution-card{
+    border:1px solid var(--ozw-border);border-radius:14px;padding:40px;
+    background:var(--ozw-surface);transition:border-color .2s ease, background .2s ease, transform .2s ease;
+  }
+  .solution-card:hover{background:#fff;border-color:var(--ozw-border-strong);transform:translateY(-3px);box-shadow:var(--shadow-sm);}
+  .solution-card h3{font-size:24px;}
+  .solution-card p{margin-top:12px;color:var(--ozw-text-secondary);font-size:15.5px;}
+
+  /* ===== INDUSTRIES ===== */
+  .industries-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media (max-width:900px){.industries-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.industries-grid{grid-template-columns:1fr;}}
+  .industry-card{
+    border:1px solid var(--ozw-border);border-radius:12px;padding:26px;background:#fff;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    cursor:default;
+  }
+  .industry-card:hover{border-color:var(--ozw-accent);transform:translateY(-3px);box-shadow:var(--shadow-sm);}
+  .industry-icon{width:38px;height:38px;border-radius:8px;background:var(--ozw-accent-tint);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .industry-icon svg{width:19px;height:19px;stroke:var(--ozw-accent-dark);}
+  .industry-card h4{font-size:17px;}
+  .industry-card p{margin-top:6px;font-size:13.5px;color:var(--ozw-text-secondary);}
+  .industry-arrow{margin-top:16px;font-size:13px;font-weight:600;color:var(--ozw-text-tertiary);display:flex;align-items:center;gap:5px;transition:color .2s ease, gap .2s ease;}
+  .industry-card:hover .industry-arrow{color:var(--ozw-accent);gap:8px;}
+
+  /* ===== WHY OZOWINX ===== */
+  .why-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:72px;}
+  @media (max-width:900px){.why-grid{grid-template-columns:1fr;gap:40px;}}
+  .why-statement{font-size:38px;line-height:1.2;letter-spacing:-0.02em;position:sticky;top:120px;align-self:start;}
+  @media (max-width:900px){.why-statement{position:static;font-size:30px;}}
+  .why-list{display:flex;flex-direction:column;}
+  .why-item{padding:28px 0;border-top:1px solid var(--ozw-border);}
+  .why-item:last-child{border-bottom:1px solid var(--ozw-border);}
+  .why-item h4{font-size:19px;}
+  .why-item p{margin-top:8px;color:var(--ozw-text-secondary);font-size:15.5px;}
+
+  /* ===== ECOSYSTEM ===== */
+  .eco{background:var(--ozw-surface);border:1px solid var(--ozw-border);border-radius:16px;padding:56px;display:grid;grid-template-columns:1fr 0.9fr;gap:56px;align-items:center;}
+  @media (max-width:900px){.eco{grid-template-columns:1fr;padding:36px 28px;gap:36px;}}
+  .eco h2{font-size:32px;margin-top:14px;}
+  .eco p{margin-top:16px;color:var(--ozw-text-secondary);font-size:16px;line-height:1.65;}
+  .eco-diagram{font-family:var(--font-mono);font-size:12px;}
+  .eco-node{border:1px solid var(--ozw-border-strong);border-radius:10px;padding:14px 18px;text-align:center;background:#fff;}
+  .eco-node.top{font-weight:600;font-size:13px;letter-spacing:0.03em;}
+  .eco-node.top small{display:block;font-weight:400;color:var(--ozw-text-tertiary);margin-top:3px;font-size:11px;}
+  .eco-line{width:1px;height:24px;background:var(--ozw-border-strong);margin:0 auto;}
+  .eco-fan{display:flex;justify-content:center;gap:0;position:relative;height:24px;}
+  .eco-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0;}
+  .eco-node.child{padding:16px;}
+  .eco-node.highlight{border-color:var(--ozw-accent);background:var(--ozw-accent-tint);color:var(--ozw-accent-dark);font-weight:600;}
+
+  /* ===== PROCESS ===== */
+  .process-line{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  .process-line::before{content:"";position:absolute;top:11px;left:5%;right:5%;height:1px;background:var(--ozw-border);}
+  @media (max-width:800px){.process-line{grid-template-columns:1fr;}.process-line::before{display:none;}}
+  .process-step{padding-right:24px;position:relative;}
+  @media (max-width:800px){.process-step{padding:0 0 32px 28px;border-left:1px solid var(--ozw-border);margin-left:11px;}}
+  .process-dot{width:11px;height:11px;border-radius:50%;background:var(--ozw-accent);position:relative;z-index:1;}
+  @media (max-width:800px){.process-dot{position:absolute;left:-6px;top:0;}}
+  .process-num{font-family:var(--font-mono);font-size:13px;color:var(--ozw-text-tertiary);margin-top:20px;}
+  .process-step h3{font-size:20px;margin-top:8px;}
+  .process-step p{margin-top:8px;color:var(--ozw-text-secondary);font-size:14.5px;}
+
+  /* ===== STACK ===== */
+  .stack-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--ozw-border);border:1px solid var(--ozw-border);border-radius:12px;overflow:hidden;}
+  @media (max-width:900px){.stack-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.stack-grid{grid-template-columns:1fr;}}
+  .stack-cell{background:#fff;padding:26px 22px;}
+  .stack-cell h4{font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;color:var(--ozw-text-tertiary);text-transform:uppercase;}
+  .stack-cell p{margin-top:10px;font-size:14.5px;color:var(--ozw-text);font-weight:500;}
+
+  /* ===== CASE STUDIES ===== */
+  .case-grid{display:flex;flex-direction:column;gap:20px;}
+  .case-card{
+    border:1px solid var(--ozw-border);border-radius:14px;padding:40px;
+    display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:32px;align-items:start;
+    transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  .case-card:hover{border-color:var(--ozw-border-strong);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+  @media (max-width:980px){.case-card{grid-template-columns:1fr;}}
+  .case-tag{font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ozw-accent);}
+  .case-card h3{font-size:23px;margin-top:10px;}
+  .case-badge{display:inline-block;margin-top:10px;font-size:11px;font-family:var(--font-mono);color:var(--ozw-text-tertiary);border:1px solid var(--ozw-border);border-radius:5px;padding:2px 8px;}
+  .case-col h5{font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ozw-text-tertiary);}
+  .case-col p{margin-top:8px;font-size:14.5px;color:var(--ozw-text-secondary);}
+  .case-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .case-tags span{font-size:11.5px;font-family:var(--font-mono);background:var(--ozw-surface-alt);border:1px solid var(--ozw-border);padding:3px 9px;border-radius:5px;color:var(--ozw-text-secondary);}
+  .case-arrow{width:38px;height:38px;border:1px solid var(--ozw-border-strong);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s ease, border-color .2s ease, transform .2s ease;flex-shrink:0;}
+  .case-card:hover .case-arrow{background:var(--ozw-text);border-color:var(--ozw-text);transform:rotate(45deg);}
+  .case-card:hover .case-arrow svg{stroke:#fff;}
+
+  /* ===== METRICS ===== */
+  .metrics{background:var(--ozw-text);border-radius:16px;padding:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;}
+  @media (max-width:760px){.metrics{grid-template-columns:1fr 1fr;padding:36px 28px;}}
+  .metric-item span{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+  .metric-item b{display:block;font-size:40px;font-weight:700;color:#fff;margin-top:10px;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;}
+
+  /* ===== SECURITY ===== */
+  .security-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  @media (max-width:900px){.security-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:520px){.security-grid{grid-template-columns:1fr;}}
+  .security-card{border:1px solid var(--ozw-border);border-radius:12px;padding:28px;}
+  .security-visual{width:100%;height:52px;margin-bottom:20px;position:relative;}
+  .security-visual svg{width:100%;height:100%;}
+  .security-card h4{font-size:16.5px;}
+  .security-card p{margin-top:8px;font-size:14px;color:var(--ozw-text-secondary);}
+
+  /* ===== FAQ ===== */
+  .faq{max-width:760px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--ozw-border);}
+  .faq-q{width:100%;background:none;border:none;text-align:left;padding:24px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;cursor:pointer;font-size:17px;font-weight:600;color:var(--ozw-text);}
+  .faq-q .plus{width:20px;height:20px;position:relative;flex-shrink:0;}
+  .faq-q .plus::before,.faq-q .plus::after{content:"";position:absolute;background:var(--ozw-text);transition:transform .3s ease;}
+  .faq-q .plus::before{left:0;top:9px;width:20px;height:2px;}
+  .faq-q .plus::after{left:9px;top:0;width:2px;height:20px;}
+  .faq-item.open .faq-q .plus::after{transform:rotate(90deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.7,.2,1), padding .35s ease;}
+  .faq-a p{padding-bottom:24px;color:var(--ozw-text-secondary);font-size:15.5px;max-width:640px;line-height:1.65;}
+  .faq-item.open .faq-a{max-height:220px;}
+
+  /* ===== FINAL CTA ===== */
+  .final-cta{position:relative;background:var(--ozw-text);border-radius:20px;padding:88px 40px;text-align:center;overflow:hidden;}
+  .final-cta-lines{position:absolute;inset:0;opacity:0.5;}
+  .final-cta h2{position:relative;font-size:46px;color:#fff;max-width:680px;margin:0 auto;}
+  @media (max-width:640px){.final-cta h2{font-size:32px;}.final-cta{padding:64px 24px;}}
+  .final-cta p{position:relative;margin-top:20px;color:rgba(255,255,255,0.68);font-size:17px;max-width:520px;margin-left:auto;margin-right:auto;}
+  .final-cta .cta-buttons{position:relative;display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap;}
+
+  /* ===== FOOTER ===== */
+  footer{border-top:1px solid var(--ozw-border);padding:72px 0 32px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;}
+  @media (max-width:760px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:480px){.footer-grid{grid-template-columns:1fr;}}
+  .footer-brand p{margin-top:14px;color:var(--ozw-text-secondary);font-size:14.5px;max-width:220px;}
+  .footer-col h5{font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ozw-text-tertiary);margin-bottom:16px;}
+  .footer-col li{margin-bottom:11px;}
+  .footer-col a{font-size:14.5px;color:var(--ozw-text-secondary);transition:color .18s ease;}
+  .footer-col a:hover{color:var(--ozw-text);}
+  .footer-bottom{margin-top:64px;padding-top:28px;border-top:1px solid var(--ozw-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .footer-bottom-links{display:flex;gap:24px;}
+  .footer-bottom-links a{font-size:13.5px;color:var(--ozw-text-secondary);}
+  .footer-bottom-links a:hover{color:var(--ozw-text);}
+  .footer-legal{font-size:13.5px;color:var(--ozw-text-tertiary);}
+  .footer-eco{margin-top:8px;font-size:12.5px;color:var(--ozw-text-tertiary);}
+</style>
+
+<header id="siteHeader">
+  <div class="nav-inner">
+    <a href="#top" class="logo" aria-label="Ozowinx home">
+      <svg class="logo-mark" viewBox="0 0 26 26" fill="none"><rect x="1" y="1" width="24" height="24" rx="6"/><path d="M8 17 L13 8 L18 17" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      ozowinx
+    </a>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#industries">Industries</a>
+      <a href="#why">About</a>
+      <a href="#insights">Insights</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#contact" class="btn btn-secondary">Talk to Us</a>
+      <a href="#contact" class="btn btn-primary">Start a Project <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services">Services</a>
+    <a href="#solutions">Solutions</a>
+    <a href="#industries">Industries</a>
+    <a href="#why">About</a>
+    <a href="#insights">Insights</a>
+    <a href="#contact" class="btn btn-primary">Start a Project →</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div class="reveal in">
+        <div class="eyebrow">DIGITAL ENGINEERING · AI · CLOUD · AUTOMATION</div>
+        <h1>We build technology that moves businesses forward.</h1>
+        <p class="hero-sub">From product engineering to AI-powered systems, Ozowinx helps businesses turn complex technology challenges into scalable digital solutions.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-accent">Start a Project <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#services" class="btn btn-secondary">Explore Our Services</a>
+        </div>
+        <div class="hero-trust">ENGINEERING-LED · BUSINESS-FOCUSED · BUILT FOR SCALE</div>
+      </div>
+
+      <div class="dash reveal in" style="transition-delay:.1s">
+        <div class="dash-bar">
+          <span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot"></span>
+          <span class="dash-title">ozowinx.systems / operations</span>
+        </div>
+        <div class="dash-body">
+          <div class="dash-head"><b>OZOWINX</b>DIGITAL OPERATIONS</div>
+          <div class="dash-cols"><span>PROJECTS</span><span style="text-align:right">SYSTEMS</span></div>
+          <div class="dash-rule"></div>
+          <div class="dash-rows">
+            <div class="dash-row">Product Engineering <span class="dash-status"><i></i>Active</span></div>
+            <div class="dash-row">AI Systems <span class="dash-status"><i></i>Active</span></div>
+            <div class="dash-row">Cloud Infrastructure <span class="dash-status"><i></i>Healthy</span></div>
+            <div class="dash-row">Automation <span class="dash-status"><i></i>Running</span></div>
+          </div>
+          <div class="dash-rule"></div>
+          <div class="dash-head">SYSTEM PERFORMANCE</div>
+          <div class="dash-metrics">
+            <div class="dash-metric up"><b id="mUptime">99.98%</b><span>Uptime</span></div>
+            <div class="dash-metric"><b id="mSystems">42</b><span>Active Systems</span></div>
+            <div class="dash-metric up"><b>+24%</b><span>Efficiency</span></div>
+            <div class="dash-metric"><b id="mInteg">18</b><span>Integrations</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITY STRIP -->
+  <div class="strip">
+    <div class="wrap"><div class="strip-inner">
+      <div class="strip-item">PRODUCT ENGINEERING</div>
+      <div class="strip-item">AI SYSTEMS</div>
+      <div class="strip-item">CLOUD &amp; DEVOPS</div>
+      <div class="strip-item">AUTOMATION</div>
+      <div class="strip-item">WEB &amp; MOBILE</div>
+      <div class="strip-item">SYSTEM INTEGRATION</div>
+    </div></div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">WHAT WE DO</div>
+      <h2>Technology built around your business.</h2>
+      <p>Your technology should solve business problems, not create more of them. Ozowinx works across product, engineering, infrastructure, and automation to create systems that are reliable, scalable, and designed for real-world use.</p>
+    </div>
+    <div class="principles reveal-group reveal">
+      <div class="principle reveal-item">
+        <div class="principle-num">01</div>
+        <h3>Build</h3>
+        <p>Transform ideas into reliable digital products.</p>
+      </div>
+      <div class="principle reveal-item">
+        <div class="principle-num">02</div>
+        <h3>Modernize</h3>
+        <p>Upgrade legacy systems and workflows.</p>
+      </div>
+      <div class="principle reveal-item">
+        <div class="principle-num">03</div>
+        <h3>Scale</h3>
+        <p>Build infrastructure and systems capable of supporting growth.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section-alt" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">OUR SERVICES</div>
+        <h2>From strategy to production.</h2>
+      </div>
+      <div class="services-grid reveal-group reveal">
+        <div class="service-card reveal-item">
+          <div class="service-index">01</div>
+          <h3>Product Engineering</h3>
+          <p class="desc">Design and develop modern web and mobile applications that are built for performance, usability, and scale.</p>
+          <ul class="service-list">
+            <li>Web Applications</li><li>Mobile Applications</li>
+            <li>SaaS Platforms</li><li>Enterprise Software</li>
+            <li>API Development</li>
+          </ul>
+          <a href="#contact" class="service-cta">Explore Product Engineering <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card reveal-item">
+          <div class="service-index">02</div>
+          <h3>AI &amp; Intelligent Systems</h3>
+          <p class="desc">Build practical AI systems that improve workflows, decision-making, automation, and customer experiences.</p>
+          <ul class="service-list">
+            <li>AI Applications</li><li>AI Agents</li>
+            <li>Intelligent Automation</li><li>Knowledge Systems</li>
+            <li>AI Integrations</li>
+          </ul>
+          <a href="#contact" class="service-cta">Explore AI Solutions <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card reveal-item">
+          <div class="service-index">03</div>
+          <h3>Cloud &amp; Infrastructure</h3>
+          <p class="desc">Design reliable cloud infrastructure and deployment systems for modern applications.</p>
+          <ul class="service-list">
+            <li>Cloud Architecture</li><li>DevOps</li>
+            <li>CI/CD</li><li>Infrastructure Automation</li>
+            <li>Monitoring</li>
+          </ul>
+          <a href="#contact" class="service-cta">Explore Cloud Services <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="service-card reveal-item">
+          <div class="service-index">04</div>
+          <h3>Automation &amp; Integration</h3>
+          <p class="desc">Connect systems, eliminate repetitive work, and create intelligent business workflows.</p>
+          <ul class="service-list">
+            <li>Workflow Automation</li><li>API Integrations</li>
+            <li>Business Process Automation</li><li>Third-party Integrations</li>
+            <li>Data Synchronization</li>
+          </ul>
+          <a href="#contact" class="service-cta">Explore Automation <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE / ARCHITECTURE -->
+  <section class="section wrap">
+    <div class="feature">
+      <div class="reveal">
+        <div class="eyebrow">ENGINEERING</div>
+        <h2>Complex systems. Simplified.</h2>
+        <p>We take complex business requirements and turn them into maintainable, scalable technology systems.</p>
+        <a href="#contact" class="btn btn-secondary">Talk to an Engineer <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="arch reveal" style="transition-delay:.1s">
+        <div class="arch-row"><div class="arch-node">USERS</div></div>
+        <div class="arch-connector"></div>
+        <div class="arch-row"><div class="arch-node primary">APPLICATION</div></div>
+        <div class="arch-fan"><span class="arch-fan-mid"></span></div>
+        <div class="arch-row triple">
+          <div class="arch-node">APIs</div>
+          <div class="arch-node accent">AI Layer</div>
+          <div class="arch-node">Automation</div>
+        </div>
+        <div class="arch-fan"><span class="arch-fan-mid"></span></div>
+        <div class="arch-row"><div class="arch-node primary">DATA SYSTEMS</div></div>
+        <div class="arch-connector"></div>
+        <div class="arch-row"><div class="arch-node">CLOUD</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS -->
+  <section class="section section-alt" id="solutions">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">SOLUTIONS</div>
+        <h2>Technology for real business problems.</h2>
+      </div>
+      <div class="solutions-grid reveal-group reveal">
+        <div class="solution-card reveal-item">
+          <h3>Launch Faster</h3>
+          <p>Move from idea to production without unnecessary complexity.</p>
+        </div>
+        <div class="solution-card reveal-item">
+          <h3>Reduce Operational Work</h3>
+          <p>Automate repetitive workflows and connect disconnected systems.</p>
+        </div>
+        <div class="solution-card reveal-item">
+          <h3>Modernize Existing Technology</h3>
+          <p>Improve legacy applications, architecture, infrastructure, and workflows.</p>
+        </div>
+        <div class="solution-card reveal-item">
+          <h3>Build for the Future</h3>
+          <p>Create scalable foundations that support long-term growth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="section wrap" id="industries">
+    <div class="section-head reveal">
+      <div class="eyebrow">INDUSTRIES</div>
+      <h2>Built for ambitious businesses.</h2>
+    </div>
+    <div class="industries-grid reveal-group reveal">
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 11-14h-7z"/></svg></div>
+        <h4>Startups</h4><p>Fast, scalable foundations for early-stage growth.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l9-4 9 4v14M9 21v-6h6v6M3 11h18"/></svg></div>
+        <h4>SMEs</h4><p>Practical systems that grow with the business.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div>
+        <h4>Professional Services</h4><p>Streamlined operations and client-facing tools.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18l-1.5 11h-15L3 9zM8 9V5a4 4 0 0 1 8 0v4"/></svg></div>
+        <h4>Retail &amp; Commerce</h4><p>Connected storefronts, inventory, and fulfillment.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>Education</h4><p>Learning platforms and administrative systems.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9z"/><path d="M9 21V12h6v9"/></svg></div>
+        <h4>Finance</h4><p>Secure, compliant systems for financial workflows.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9C.7 8 2.3 4 6 4c2 0 3.5 1.2 4 2.4C10.5 5.2 12 4 14 4c3.7 0 5.3 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+        <h4>Healthcare</h4><p>Reliable systems for patient and operational data.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+      <div class="industry-card reveal-item">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5"/></svg></div>
+        <h4>Enterprise</h4><p>Large-scale architecture and system integration.</p>
+        <div class="industry-arrow">Learn more →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY OZOWINX -->
+  <section class="section section-alt" id="why">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">WHY OZOWINX</div>
+        <h2>More than a technology vendor.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-statement reveal">We think beyond the code.</div>
+        <div class="why-list reveal-group reveal">
+          <div class="why-item reveal-item">
+            <h4>Business-first engineering</h4>
+            <p>Technology decisions are connected to measurable business outcomes.</p>
+          </div>
+          <div class="why-item reveal-item">
+            <h4>Engineering ownership</h4>
+            <p>We focus on architecture, quality, maintainability, and long-term reliability.</p>
+          </div>
+          <div class="why-item reveal-item">
+            <h4>Practical AI</h4>
+            <p>We use AI where it creates genuine value — not simply because it is fashionable.</p>
+          </div>
+          <div class="why-item reveal-item">
+            <h4>Built for scale</h4>
+            <p>Systems are designed with future growth, security, and operational requirements in mind.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM -->
+  <section class="section wrap">
+    <div class="eco reveal">
+      <div>
+        <div class="eyebrow">PART OF THE OZOFI ECOSYSTEM</div>
+        <h2>Powered by the same engineering mindset behind Ozofi.</h2>
+        <p>Ozowinx is the technology services and delivery arm of the Ozofi ecosystem, bringing product engineering, AI, automation, and digital transformation capabilities to businesses beyond our own products.</p>
+      </div>
+      <div class="eco-diagram">
+        <div class="eco-node top">OZOFI<small>Product &amp; Technology</small></div>
+        <div class="eco-line"></div>
+        <div class="eco-split">
+          <div class="eco-node child">PRODUCTS</div>
+          <div class="eco-node child highlight">OZOWINX<br><small style="font-weight:400">Services &amp; Engineering</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">HOW WE WORK</div>
+        <h2>From challenge to working system.</h2>
+      </div>
+      <div class="process-line reveal-group reveal">
+        <div class="process-step reveal-item">
+          <div class="process-dot"></div>
+          <div class="process-num">01</div>
+          <h3>Discover</h3>
+          <p>Understand the business, users, requirements, and technical environment.</p>
+        </div>
+        <div class="process-step reveal-item">
+          <div class="process-dot"></div>
+          <div class="process-num">02</div>
+          <h3>Design</h3>
+          <p>Define the architecture, experience, roadmap, and implementation strategy.</p>
+        </div>
+        <div class="process-step reveal-item">
+          <div class="process-dot"></div>
+          <div class="process-num">03</div>
+          <h3>Build</h3>
+          <p>Engineer, integrate, test, and deploy the solution.</p>
+        </div>
+        <div class="process-step reveal-item">
+          <div class="process-dot"></div>
+          <div class="process-num">04</div>
+          <h3>Scale</h3>
+          <p>Monitor, improve, optimize, and evolve the system as the business grows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="section wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">TECHNOLOGY</div>
+      <h2>Technologies we work with.</h2>
+    </div>
+    <div class="stack-grid reveal-group reveal">
+      <div class="stack-cell reveal-item"><h4>Frontend</h4><p>React · Next.js · TypeScript</p></div>
+      <div class="stack-cell reveal-item"><h4>Backend</h4><p>Node.js · Python · APIs</p></div>
+      <div class="stack-cell reveal-item"><h4>Data</h4><p>PostgreSQL · Redis · Supabase</p></div>
+      <div class="stack-cell reveal-item"><h4>Cloud</h4><p>AWS · Vercel · Docker</p></div>
+      <div class="stack-cell reveal-item"><h4>AI</h4><p>LLMs · AI Agents · NLP · Intelligent Automation</p></div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="section section-alt" id="insights">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">SELECTED WORK</div>
+        <h2>Built to solve meaningful problems.</h2>
+      </div>
+      <div class="case-grid reveal-group reveal">
+        <div class="case-card reveal-item">
+          <div>
+            <div class="case-tag">SaaS Platform</div>
+            <h3>Northline Ops</h3>
+            <span class="case-badge">Placeholder project</span>
+          </div>
+          <div class="case-col"><h5>Challenge</h5><p>Fragmented spreadsheets slowed down operations planning across teams.</p></div>
+          <div class="case-col"><h5>Solution</h5><p>A unified SaaS platform with role-based workflows and real-time reporting.</p>
+            <div class="case-tags"><span>Next.js</span><span>PostgreSQL</span><span>AWS</span></div>
+          </div>
+          <div class="case-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12 12 4M6 4h6v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="case-card reveal-item">
+          <div>
+            <div class="case-tag">Business Automation</div>
+            <h3>Ledger Sync</h3>
+            <span class="case-badge">Placeholder project</span>
+          </div>
+          <div class="case-col"><h5>Challenge</h5><p>Manual reconciliation between billing and accounting systems caused delays.</p></div>
+          <div class="case-col"><h5>Solution</h5><p>An automated integration layer synchronizing records across platforms.</p>
+            <div class="case-tags"><span>Node.js</span><span>API</span><span>Automation</span></div>
+          </div>
+          <div class="case-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12 12 4M6 4h6v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="case-card reveal-item">
+          <div>
+            <div class="case-tag">AI-Powered Product</div>
+            <h3>Fieldwise Assistant</h3>
+            <span class="case-badge">Placeholder project</span>
+          </div>
+          <div class="case-col"><h5>Challenge</h5><p>Support teams spent hours answering repetitive, knowledge-base questions.</p></div>
+          <div class="case-col"><h5>Solution</h5><p>An AI agent trained on internal knowledge to resolve queries in real time.</p>
+            <div class="case-tags"><span>LLM</span><span>AI Agents</span><span>Python</span></div>
+          </div>
+          <div class="case-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12 12 4M6 4h6v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="section wrap">
+    <div class="metrics reveal">
+      <div class="metric-item"><b id="metricProducts">10+</b><span>Products Built</span></div>
+      <div class="metric-item"><b id="metricSystems">20+</b><span>Systems Integrated</span></div>
+      <div class="metric-item"><b id="metricTech">30+</b><span>Technologies</span></div>
+      <div class="metric-item"><b>Engineering</b><span>Focus</span></div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">SECURITY</div>
+        <h2>Security is part of the architecture.</h2>
+        <p>Security, reliability, access control, data protection, and operational resilience are considered from the beginning — not added after deployment.</p>
+      </div>
+      <div class="security-grid reveal-group reveal">
+        <div class="security-card reveal-item">
+          <div class="security-visual"><svg viewBox="0 0 160 52" fill="none"><rect x="1" y="16" width="34" height="20" rx="4" stroke="#CBD5E1"/><rect x="45" y="16" width="34" height="20" rx="4" stroke="#2563EB" stroke-width="1.4"/><rect x="89" y="16" width="34" height="20" rx="4" stroke="#CBD5E1"/><rect x="133" y="16" width="26" height="20" rx="4" stroke="#CBD5E1"/><path d="M35 26h10M79 26h10M123 26h10" stroke="#CBD5E1"/></svg></div>
+          <h4>Secure Architecture</h4>
+          <p>Systems are designed with isolation, least-privilege access, and defense-in-depth as default principles.</p>
+        </div>
+        <div class="security-card reveal-item">
+          <div class="security-visual"><svg viewBox="0 0 160 52" fill="none"><circle cx="30" cy="26" r="16" stroke="#CBD5E1"/><path d="M25 26l4 4 8-8" stroke="#2563EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M56 26h94" stroke="#E2E8F0"/><circle cx="80" cy="26" r="3" fill="#CBD5E1"/><circle cx="120" cy="26" r="3" fill="#CBD5E1"/></svg></div>
+          <h4>Identity &amp; Access</h4>
+          <p>Role-based access control and authentication designed around real organizational structures.</p>
+        </div>
+        <div class="security-card reveal-item">
+          <div class="security-visual"><svg viewBox="0 0 160 52" fill="none"><path d="M30 6l20 8v14c0 12-8 18-20 22-12-4-20-10-20-22V14l20-8z" stroke="#CBD5E1" transform="translate(0,0)"/><path d="M22 26l6 6 12-12" stroke="#2563EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h4>Data Protection</h4>
+          <p>Encryption, backups, and access boundaries applied consistently across every environment.</p>
+        </div>
+        <div class="security-card reveal-item">
+          <div class="security-visual"><svg viewBox="0 0 160 52" fill="none"><path d="M4 30 L34 30 L44 12 L58 44 L70 30 L156 30" stroke="#CBD5E1" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 12 L58 44 L70 30" stroke="#2563EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h4>Operational Reliability</h4>
+          <p>Monitoring, alerting, and incident response built into every system we operate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow">FAQ</div>
+      <h2>Common questions.</h2>
+    </div>
+    <div class="faq reveal" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">What does Ozowinx do?<span class="plus"></span></button>
+        <div class="faq-a"><p>Ozowinx designs, builds, modernizes, integrates, and operates digital products and technology systems — combining product engineering, AI, cloud infrastructure, and automation.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What type of businesses do you work with?<span class="plus"></span></button>
+        <div class="faq-a"><p>We work with startups, SMEs, professional services firms, and growing enterprises across retail, education, finance, healthcare, and more.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can Ozowinx build a product from scratch?<span class="plus"></span></button>
+        <div class="faq-a"><p>Yes. We handle the full lifecycle — from discovery and architecture through engineering, deployment, and ongoing scaling.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can you modernize an existing application?<span class="plus"></span></button>
+        <div class="faq-a"><p>Yes. We assess legacy systems and modernize architecture, infrastructure, and workflows without disrupting the business.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you provide AI development services?<span class="plus"></span></button>
+        <div class="faq-a"><p>Yes. We build practical AI applications, agents, and intelligent automation designed for real business value.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can you integrate our existing systems?<span class="plus"></span></button>
+        <div class="faq-a"><p>Yes. We connect internal and third-party systems through APIs and automation to eliminate manual, repetitive work.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you provide ongoing technical support?<span class="plus"></span></button>
+        <div class="faq-a"><p>Yes. Beyond launch, we monitor, maintain, and evolve systems as your business and requirements grow.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How does a project typically begin?<span class="plus"></span></button>
+        <div class="faq-a"><p>With a discovery conversation about your business, goals, and technical environment — leading to a clear, scoped plan.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="section wrap" id="contact">
+    <div class="final-cta reveal">
+      <svg class="final-cta-lines" viewBox="0 0 1200 400" preserveAspectRatio="none"><g stroke="rgba(255,255,255,0.08)" stroke-width="1"><path d="M0 80h1200M0 200h1200M0 320h1200"/><path d="M150 0v400M450 0v400M750 0v400M1050 0v400"/></g></svg>
+      <h2>Have a technology challenge worth solving?</h2>
+      <p>Tell us what you're building, what is slowing you down, or where you want to go next. We'll help you identify the right path forward.</p>
+      <div class="cta-buttons">
+        <a href="mailto:hello@ozowinx.com" class="btn btn-invert">Start a Project <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="mailto:hello@ozowinx.com" class="btn btn-outline-invert">Talk to Ozowinx</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo">
+          <svg class="logo-mark" viewBox="0 0 26 26" fill="none"><rect x="1" y="1" width="24" height="24" rx="6"/><path d="M8 17 L13 8 L18 17" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          ozowinx
+        </a>
+        <p>Technology. Engineering. Transformation.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Product Engineering</a></li>
+          <li><a href="#services">AI &amp; Intelligent Systems</a></li>
+          <li><a href="#services">Cloud &amp; DevOps</a></li>
+          <li><a href="#services">Automation</a></li>
+          <li><a href="#services">System Integration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#why">About</a></li>
+          <li><a href="#industries">Industries</a></li>
+          <li><a href="#insights">Case Studies</a></li>
+          <li><a href="#insights">Insights</a></li>
+          <li><a href="#contact">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="#contact">Start a Project</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">© 2026 Ozowinx. All rights reserved.</div>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+    <div class="footer-eco">A company in the Ozofi ecosystem.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var header = document.getElementById('siteHeader');
+  var onScroll = function(){
+    if(window.scrollY > 8){ header.classList.add('scrolled'); }
+    else { header.classList.remove('scrolled'); }
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', function(){
+    var open = mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); });
+  });
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.closest('.faq-item');
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o){ o.classList.remove('open'); });
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+
+  /* subtle live metric ticks in hero dashboard */
+  if(!reduce){
+    var uptimeEl = document.getElementById('mUptime');
+    var vals = ['99.98%','99.97%','99.99%','99.98%'];
+    var vi = 0;
+    setInterval(function(){
+      vi = (vi+1) % vals.length;
+      if(uptimeEl) uptimeEl.textContent = vals[vi];
+    }, 4200);
+  }
+})();
+</script>

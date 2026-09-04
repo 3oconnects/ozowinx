@@ -1,0 +1,38 @@
+---
+title: Ledger Sync
+description: Manual reconciliation between billing and accounting caused month-end delays.
+date: 2026-04-02
+category: Business Automation
+client: Placeholder client
+outcome: Month-end close moved from nine days to two.
+technologies: ['Node.js', 'REST APIs', 'Automation']
+placeholder: true
+---
+
+## Challenge
+
+Billing and accounting lived in separate systems with no shared identifier.
+Reconciliation was a monthly manual exercise: two people, most of a week, matching
+records by hand and chasing the differences.
+
+## Approach
+
+Rather than replacing either system, we built an integration layer between them.
+The first task was establishing a durable matching key — which meant confronting
+the historical records where no clean match existed.
+
+## Architecture
+
+A Node.js service consuming both systems' APIs, writing to an intermediate
+reconciliation store. Unmatched records are surfaced in a review queue rather than
+silently dropped, so exceptions get human attention instead of accumulating.
+
+## Outcome
+
+Month-end close moved from nine days to two. The review queue typically holds
+fewer than a dozen records, against several hundred before.
+
+## Lessons Learned
+
+Automating a reconciliation process forces you to define correctness precisely.
+Much of the value came from that definition, not from the code that enforced it.

@@ -1,0 +1,38 @@
+---
+title: Fieldwise Assistant
+description: Support teams spent hours each day answering repetitive knowledge-base questions.
+date: 2026-02-18
+category: AI-Powered Product
+client: Placeholder client
+outcome: Roughly 60% of routine queries resolved without human involvement.
+technologies: ['LLMs', 'AI Agents', 'Python']
+placeholder: true
+---
+
+## Challenge
+
+The support team answered the same forty or so questions repeatedly. The answers
+existed in an internal knowledge base, but finding them took longer than asking a
+colleague — so nobody used it.
+
+## Approach
+
+We were explicit that this was a retrieval problem before it was an AI problem.
+The knowledge base was audited and restructured first; only then did we put a
+model in front of it.
+
+## Architecture
+
+A retrieval-augmented agent over the cleaned knowledge base, with citations back
+to source documents on every answer and a hard refusal path when confidence is
+low — the agent says it does not know rather than inventing an answer.
+
+## Outcome
+
+Roughly 60% of routine queries now resolve without human involvement. Escalations
+arrive with the relevant documents already attached.
+
+## Lessons Learned
+
+The refusal path mattered more than the answer quality. Support staff only started
+trusting the system once they saw it decline to guess.
